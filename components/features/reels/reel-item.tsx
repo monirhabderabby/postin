@@ -1,8 +1,8 @@
 "use client";
 
 import { PostCommentDialog } from "@/components/shared/features/posts/comment-dialog/post-comment-dialog";
-import { ReactionType } from "@/components/shared/features/posts/group-post-action";
 import { useReactToReel } from "@/hooks/features/reels/use-react-to-reel";
+import { ReactionType } from "@/lib/reactions";
 import { Reel } from "@/types/features/reels";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart } from "lucide-react";

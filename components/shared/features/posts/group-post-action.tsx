@@ -1,6 +1,8 @@
 "use client";
 
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
 import { useReactToPost } from "@/hooks/features/groups/posts/api/use-react-to-post";
+import { resolveReaction } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import { Post } from "@/types/features/posts";
 import { AnimatePresence, motion } from "framer-motion";
@@ -173,12 +175,17 @@ export const PostActions = ({
                       onHoverStart={() => setHoveredReaction(reaction.type)}
                       onHoverEnd={() => setHoveredReaction(null)}
                       className={cn(
-                        "text-[26px] leading-none select-none focus:outline-none relative",
+                        "select-none focus:outline-none relative",
                         activeReaction === reaction.type &&
                           "drop-shadow-[0_0_4px_rgba(24,119,242,0.6)]",
                       )}
+                      aria-label={reaction.label}
                     >
-                      {reaction.emoji}
+                      <ReactionImage
+                        reaction={resolveReaction(reaction.type)}
+                        animated={hoveredReaction === reaction.type}
+                        size={32}
+                      />
                     </motion.button>
                   </div>
                 ))}
@@ -202,9 +209,10 @@ export const PostActions = ({
                   transition={{ duration: 0.1 }}
                   className="flex items-center gap-2 hover:bg-gray-100 w-full justify-center p-1 rounded-[3px] cursor-pointer"
                 >
-                  <span className="text-[18px] leading-none">
-                    {currentReaction.emoji}
-                  </span>
+                  <ReactionImage
+                    reaction={resolveReaction(currentReaction.type)}
+                    size={20}
+                  />
                   <span
                     className="text-[15px] font-semibold capitalize"
                     style={{ color: currentReaction.color }}

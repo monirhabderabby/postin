@@ -1,4 +1,4 @@
-import { ReactionType } from "@/components/shared/features/posts/group-post-action";
+import { ReactionType } from "@/lib/reactions";
 import { Pagination } from "@/types";
 
 export interface Post {

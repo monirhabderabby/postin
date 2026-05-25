@@ -1,5 +1,5 @@
-import { ReactionType } from "@/components/shared/features/posts/group-post-action";
 import { baseURL } from "@/constants";
+import { ReactionType } from "@/lib/reactions";
 import { StoryGroup } from "@/types/features/feed/story";
 import { useQuery } from "@tanstack/react-query";
 

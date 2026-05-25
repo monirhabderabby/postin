@@ -1,4 +1,5 @@
 import { baseURL } from "@/constants";
+import type { ReactionType } from "@/lib/reactions";
 import { ReelsResponse } from "@/types/features/reels";
 import { Post } from "@/types/features/posts";
 import {
@@ -8,8 +9,6 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { REELS_QUERY_KEY } from "./use-get-reels";
-
-type ReactionType = "like" | "love" | "haha" | "wow" | "sad" | "angry" | "care";
 
 type ApiRes = {
   success: boolean;

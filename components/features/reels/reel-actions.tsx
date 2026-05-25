@@ -1,10 +1,8 @@
 "use client";
 
-import {
-  REACTIONS,
-  ReactionType,
-} from "@/components/shared/features/posts/group-post-action";
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
 import { useSaveReel } from "@/hooks/features/reels/use-save-reel";
+import { REACTIONS, ReactionType, resolveReaction } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import { Reel } from "@/types/features/reels";
 import { AnimatePresence, motion } from "framer-motion";
@@ -48,6 +46,9 @@ export const ReelActions = ({
 }: ReelActionsProps) => {
   const [shareOpen, setShareOpen] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [hoveredReaction, setHoveredReaction] = useState<ReactionType | null>(
+    null,
+  );
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { mutate: save, isPending: isSaving } = useSaveReel({
@@ -115,15 +116,21 @@ export const ReelActions = ({
                     }}
                     whileHover={{ scale: 1.35, y: -4 }}
                     whileTap={{ scale: 0.95 }}
+                    onHoverStart={() => setHoveredReaction(r.type)}
+                    onHoverEnd={() => setHoveredReaction(null)}
                     onClick={() => handlePicker(r.type)}
                     className={cn(
-                      "text-[26px] leading-none select-none focus:outline-none",
+                      "select-none focus:outline-none",
                       activeReaction === r.type &&
                         "drop-shadow-[0_0_6px_rgba(24,119,242,0.8)]",
                     )}
                     aria-label={r.label}
                   >
-                    {r.emoji}
+                    <ReactionImage
+                      reaction={resolveReaction(r.type)}
+                      animated={hoveredReaction === r.type}
+                      size={32}
+                    />
                   </motion.button>
                 ))}
               </motion.div>
@@ -149,9 +156,11 @@ export const ReelActions = ({
                   animate={{ scale: 1 }}
                   exit={{ scale: 0.4 }}
                   transition={{ type: "spring", stiffness: 500, damping: 22 }}
-                  className="text-[22px] leading-none"
                 >
-                  {currentReaction.emoji}
+                  <ReactionImage
+                    reaction={resolveReaction(currentReaction.type)}
+                    size={24}
+                  />
                 </motion.span>
               ) : (
                 <motion.span

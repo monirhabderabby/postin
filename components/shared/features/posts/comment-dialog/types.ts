@@ -1,4 +1,4 @@
-import { ReactionType } from "@/components/shared/features/posts/group-post-action";
+import { ReactionType } from "@/lib/reactions";
 import { Comment } from "@/types/features/posts/comments";
 
 export type { ReactionType };
@@ -48,6 +48,7 @@ export const REACTION_META: ReactionMeta[] = [
   { type: "wow", emoji: "😮", color: "#f7b928" },
   { type: "sad", emoji: "😢", color: "#f7b928" },
   { type: "angry", emoji: "😡", color: "#e9710f" },
+  { type: "care", emoji: "\uD83E\uDD70", color: "#f7b928" },
 ];
 
 export const CURRENT_USER_AVATAR = ""; // swap with real current-user avatar/hook

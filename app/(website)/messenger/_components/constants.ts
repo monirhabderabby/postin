@@ -1,3 +1,9 @@
+import {
+  QUICK_REACTIONS,
+  REACTIONS,
+  resolveReaction,
+} from "@/lib/reactions";
+
 export const THEMES = [
   { id: "default", name: "Default", color: "from-white to-white" },
   { id: "obesity-1", name: "Obesity", color: "from-emerald-200 to-teal-200" },
@@ -19,30 +25,9 @@ export const THEMES = [
 
 export function getThemeById(themeId?: string | null) {
   if (!themeId) return null;
-  return THEMES.find((t) => t.id === themeId) || null;
+  return THEMES.find((theme) => theme.id === themeId) || null;
 }
-
-// Same reaction set used by the newsfeed (see components/shared/features/posts/group-post-action.tsx)
-export const REACTIONS = [
-  { type: "like", emoji: "👍", label: "Like", color: "#1877f2" },
-  { type: "love", emoji: "❤️", label: "Love", color: "#f33e58" },
-  { type: "haha", emoji: "😆", label: "Haha", color: "#f7b928" },
-  { type: "wow", emoji: "😮", label: "Wow", color: "#f7b928" },
-  { type: "sad", emoji: "😢", label: "Sad", color: "#f7b928" },
-  { type: "angry", emoji: "😡", label: "Angry", color: "#e9710f" },
-  { type: "care", emoji: "🥰", label: "Care", color: "#f7b928" },
-] as const;
 
 export type MessengerReactionType = (typeof REACTIONS)[number]["type"];
 
-// Backward-compat exports (chat picks 5 quick reactions; "more" opens emoji picker)
-export const QUICK_REACTIONS = REACTIONS.slice(0, 5);
-
-// Map a stored emoji value back to a known reaction (so legacy unicode reactions still render)
-export function resolveReaction(value: string) {
-  const byEmoji = REACTIONS.find((r) => r.emoji === value);
-  if (byEmoji) return byEmoji;
-  const byType = REACTIONS.find((r) => r.type === value.toLowerCase());
-  if (byType) return byType;
-  return { type: value, emoji: value, label: value, color: "#888" };
-}
+export { QUICK_REACTIONS, REACTIONS, resolveReaction };

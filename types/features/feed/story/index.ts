@@ -1,6 +1,6 @@
 // types/features/feed/story/index.ts
 
-import { ReactionType } from "@/components/shared/features/posts/group-post-action";
+import { ReactionType } from "@/lib/reactions";
 
 export type PrivacyType = "public" | "friends" | "custom";
 

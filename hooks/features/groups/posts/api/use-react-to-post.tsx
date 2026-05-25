@@ -1,4 +1,5 @@
 import { baseURL } from "@/constants";
+import type { ReactionType } from "@/lib/reactions";
 import type { FeedPostsResponse } from "@/types/features/feed";
 import { GroupPostsResponse, Post } from "@/types/features/posts";
 import {
@@ -7,8 +8,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-
-type ReactionType = "like" | "love" | "haha" | "wow" | "sad" | "angry" | "care";
 
 type ApiRes = {
   success: boolean;

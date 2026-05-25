@@ -1,9 +1,10 @@
 "use client";
 
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
 import { useReactToComment } from "@/hooks/features/groups/posts/comment/use-react-to-comment";
+import { ReactionType, resolveReaction } from "@/lib/reactions";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
-import { ReactionType } from "../group-post-action";
 import { REACTION_META, ReactionMeta } from "./types";
 
 interface CommentLikeButtonProps {
@@ -52,8 +53,6 @@ export function CommentLikeButton({
     reactToComment({ commentId, type });
   };
 
-  console.log(active);
-
   return (
     <div
       className="relative inline-flex items-center gap-1"
@@ -85,9 +84,9 @@ export function CommentLikeButton({
                 }}
                 whileHover={{ scale: 1.5, y: -6 }}
                 onClick={() => pick(r)}
-                className="text-[22px] leading-none bg-transparent border-none cursor-pointer p-0.5"
+                className="bg-transparent border-none cursor-pointer p-0.5"
               >
-                {r.emoji}
+                <ReactionImage reaction={resolveReaction(r.type)} size={28} />
               </motion.button>
             ))}
           </motion.div>
@@ -101,9 +100,9 @@ export function CommentLikeButton({
         className="flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 text-[12px] font-semibold disabled:opacity-60 transition-opacity"
         style={{ color: liked && active ? active.color : "#65676b" }}
       >
-        <span className="text-[14px] leading-none">
-          {liked && active ? active.emoji : ""}
-        </span>
+        {liked && active && (
+          <ReactionImage reaction={resolveReaction(active.type)} size={16} />
+        )}
         {liked && active
           ? active.type.charAt(0).toUpperCase() + active.type.slice(1)
           : "Like"}

@@ -1,6 +1,7 @@
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
+import { REACTIONS, resolveReaction } from "@/lib/reactions";
 import { Reaction } from "@/types/features/posts";
 import { useState } from "react";
-import { REACTIONS } from "../group-post-action";
 
 import dynamic from "next/dynamic";
 const ReactionsModal = dynamic(() => import("./reaction-modal"), {
@@ -49,15 +50,14 @@ export default function OverlappingReactions({
           {sortedReactions.map((reaction: any, index) => (
             <div
               key={reaction.type}
-              className="relative w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold border-2 border-white shadow-sm"
+              className="relative w-6 h-6 rounded-full flex items-center justify-center bg-white text-sm font-bold border-2 border-white shadow-sm"
               style={{
-                backgroundColor: reaction.color,
                 marginLeft: index === 0 ? 0 : "-12px",
                 zIndex: sortedReactions.length - index,
               }}
               title={`${reaction.label}: ${reaction.count}`}
             >
-              {reaction.emoji}
+              <ReactionImage reaction={resolveReaction(reaction.type)} size={18} />
             </div>
           ))}
         </div>

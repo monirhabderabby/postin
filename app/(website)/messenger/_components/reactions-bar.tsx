@@ -1,8 +1,8 @@
 "use client";
 
-import { Plus } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { QUICK_REACTIONS } from "./constants";
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
+import { REACTIONS } from "@/lib/reactions";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   onPick: (emoji: string) => void;
@@ -10,8 +10,9 @@ interface Props {
   onClose: () => void;
 }
 
-export function ReactionsBar({ onPick, onMore, onClose }: Props) {
+export function ReactionsBar({ onPick, onClose }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const [hoveredReaction, setHoveredReaction] = useState<string | null>(null);
 
   useEffect(() => {
     function handle(e: MouseEvent) {
@@ -26,25 +27,23 @@ export function ReactionsBar({ onPick, onMore, onClose }: Props) {
       ref={ref}
       className="flex items-center gap-1.5 rounded-full border bg-card px-3 py-2 shadow-lg ring-1 ring-black/5"
     >
-      {QUICK_REACTIONS.map((r) => (
+      {REACTIONS.map((r) => (
         <button
           key={r.type}
           type="button"
           onClick={() => onPick(r.emoji)}
+          onMouseEnter={() => setHoveredReaction(r.type)}
+          onMouseLeave={() => setHoveredReaction(null)}
           title={r.label}
-          className="cursor-pointer text-[18px] transition hover:scale-125"
+          className="cursor-pointer transition hover:scale-125"
         >
-          {r.emoji}
+          <ReactionImage
+            reaction={r}
+            animated={hoveredReaction === r.type}
+            size={28}
+          />
         </button>
       ))}
-      <button
-        type="button"
-        onClick={onMore}
-        className="ml-1 flex size-6 cursor-pointer items-center justify-center rounded-full bg-muted text-muted-foreground transition hover:bg-muted/70"
-        aria-label="More reactions"
-      >
-        <Plus className="size-3" />
-      </button>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
+import { resolveReaction } from "@/lib/reactions";
 import { Story, StoryUser } from "@/types/features/feed/story";
 import {
   BellOff,
@@ -35,6 +37,7 @@ const REACTIONS = [
   { emoji: "😂", type: "haha" as const },
   { emoji: "😢", type: "sad" as const },
   { emoji: "😡", type: "angry" as const },
+  { emoji: "\uD83E\uDD70", type: "care" as const },
 ];
 
 // add this just above the component or alongside the other helpers
@@ -94,6 +97,7 @@ export function StoryViewer({
   const [isMuted, setIsMuted] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [showReactions, setShowReactions] = useState(false);
+  const [hoveredReaction, setHoveredReaction] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [sentReaction, setSentReaction] = useState<string | null>(() =>
     getMyReaction(stories[initialIndex], currentUserId),
@@ -518,9 +522,15 @@ export function StoryViewer({
                     e.stopPropagation();
                     handleReact(r.type);
                   }}
-                  className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-xl hover:scale-125 transition-transform"
+                  onMouseEnter={() => setHoveredReaction(r.type)}
+                  onMouseLeave={() => setHoveredReaction(null)}
+                  className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-125 transition-transform"
                 >
-                  {r.emoji}
+                  <ReactionImage
+                    reaction={resolveReaction(r.type)}
+                    animated={hoveredReaction === r.type}
+                    size={30}
+                  />
                 </button>
               ))}
             </div>
@@ -558,7 +568,14 @@ export function StoryViewer({
               }}
               className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center text-lg hover:bg-white/20 transition-colors"
             >
-              {sentReaction ?? "😊"}
+              {sentReaction ? (
+                <ReactionImage
+                  reaction={resolveReaction(sentReaction)}
+                  size={24}
+                />
+              ) : (
+                "😊"
+              )}
             </button>
           </div>
         </div>

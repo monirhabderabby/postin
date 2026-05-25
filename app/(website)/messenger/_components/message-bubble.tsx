@@ -1,5 +1,7 @@
 "use client";
 
+import { ReactionImage } from "@/components/shared/reactions/reaction-image";
+import { resolveReaction } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import type {
   Message,
@@ -11,7 +13,6 @@ import { FileText, Reply, Smile } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Avatar } from "./avatar";
-import { resolveReaction } from "./constants";
 import {
   displayNameInConversation,
   getUserAvatar,
@@ -352,9 +353,9 @@ export function MessageBubble({
                   <span
                     key={em}
                     title={r.label}
-                    className="text-[12px] leading-none"
+                    className="leading-none"
                   >
-                    {r.emoji}
+                    <ReactionImage reaction={r} size={16} />
                   </span>
                 );
               },
